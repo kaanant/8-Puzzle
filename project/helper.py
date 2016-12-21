@@ -5,28 +5,52 @@
 import copy
 
 
-def createAllSituation(puzzle):
+def breadthFirstSearch(puzzle,target):
+
+ 	search_space = []
+ 	all_puzzles = []
+ 	search_space.append(puzzle)
+ 	all_puzzles.append(puzzle)
+
+ 	iteration = 0
+
+ 	while target not in all_puzzles and len(search_space) > 0:
+
+ 		tmp_puzzle = search_space.pop(0)
+
+ 		moves = createMoves(tmp_puzzle)
+ 		for move in moves:
+ 			copy_puzzle = copy.deepcopy(tmp_puzzle)
+ 			swap_result = swap(copy_puzzle,move[0],move[1])
+ 			if swap_result not in all_puzzles:
+ 				search_space.append(swap_result)
+ 				all_puzzles.append(swap_result)
+		
+ 	if not len(search_space) > 0:
+ 		print "Result cannot Find"
+
+def depthFirstSearch(puzzle,target):
 
 	search_space = []
-	all_puzzles = []
-	search_space.append(puzzle)
-	all_puzzles.append(puzzle)
+ 	all_puzzles = []
+ 	search_space.append(puzzle)
+ 	all_puzzles.append(puzzle)
+ 	depth = 0
 
-	iteration = 0
-	while len(search_space) > 0:
+ 	while target not in all_puzzles and len(search_space) > 0:
 
-		tmp_puzzle = search_space.pop(0)
+ 		tmp_puzzle = search_space.pop(0)
+ 		depth += 1
+ 		print depth,tmp_puzzle
+ 		moves = createMoves(tmp_puzzle)
+ 		for move in reversed(moves):
+ 			copy_puzzle = copy.deepcopy(tmp_puzzle)
+ 			swap_result = swap(copy_puzzle,move[0],move[1])
+ 			if swap_result not in all_puzzles:
+ 				search_space.insert(0,swap_result)
+ 				all_puzzles.insert(0,swap_result)
 
-		moves = createMoves(tmp_puzzle)
-		for move in moves:
-			copy_puzzle = copy.deepcopy(tmp_puzzle)
-			swap_result = swap(copy_puzzle,move[0],move[1])
-			if swap_result not in all_puzzles:
-				print len(all_puzzles)
-				search_space.append(swap_result)
-				all_puzzles.append(swap_result)
 def createMoves(puzzle):
-
 
 	row,col = findBlankIndex(puzzle)
 	moves = []
